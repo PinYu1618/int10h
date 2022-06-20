@@ -9,3 +9,5 @@ readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+cursive = { version = "0.18", features = ["toml"] }
+termion = "1.5.6"
