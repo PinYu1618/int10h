@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use rand::distributions::Alphanumeric;
 use serde::{Serialize, Deserialize};
-use tui::{widgets::{ListState, Table, List, Block, Borders, BorderType, ListItem, Row}, style::{Color, Style, Modifier}, text::{Spans, Span}, layout::Constraint, buffer::Cell};
+use tui::{widgets::{ListState, Table, List, Block, Borders, BorderType, ListItem, Row}, style::{Color, Style, Modifier}, text::{Spans, Span}, layout::Constraint, widgets::Cell};
 use crate::*;
 
 #[derive(Serialize, Deserialize, Clone)]

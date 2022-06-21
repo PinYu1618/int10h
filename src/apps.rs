@@ -1,7 +1,6 @@
 use tui::widgets::Widget;
 
 mod home;
-mod pets;
 
 pub trait App {
     type W: Widget;
@@ -10,4 +9,3 @@ pub trait App {
 }
 
 pub use home::*;
-pub use pets::*;

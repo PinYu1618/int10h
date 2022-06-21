@@ -2,6 +2,7 @@
 
 //use bios::Bios;
 
+use std::error::Error;
 use std::io;
 use std::time::Duration;
 
@@ -10,13 +11,13 @@ mod int10h;
 mod terminal;
 mod ui;
 
-use apps::*;
 use int10h::*;
 use terminal::*;
 
-const DB_PATH: &str = "assets/db.json";
+const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-fn main() -> Result<(), io::Error> {
+fn main() -> Result<(), Box<dyn Error>> {
     let tick_rate = Duration::from_millis(250);
-    Ok(Int10h::default().run(tick_rate))
+    run(tick_rate)?;
+    Ok(())
 }
