@@ -111,11 +111,6 @@ struct Position {
     pub y: usize,
 }
 
-struct Size {
-    pub width: u16,
-    pub height: u16,
-}
-
 fn die(e: std::io::Error) {
     Terminal::clear_screan();
     panic!("{}", e);

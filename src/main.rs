@@ -1,25 +1,22 @@
-//use cursive::theme::BaseColor;
-//use cursive::theme::PaletteColor;
-//use cursive::theme::Color;
+//mod bios;
 
-mod bios;
+//use bios::Bios;
 
-use bios::Bios;
+use std::io;
+use std::time::Duration;
 
-fn main() {
-    Bios::default().run();
+mod apps;
+mod int10h;
+mod terminal;
+mod ui;
 
-/*
-    let mut siv = cursive::default();
+use apps::*;
+use int10h::*;
+use terminal::*;
 
-    let mut theme = siv.current_theme().clone();
-    theme.palette[PaletteColor::Background] = Color::Dark(BaseColor::Black);
-    siv.set_theme(theme);
+const DB_PATH: &str = "assets/db.json";
 
-    siv.run();
-*/
+fn main() -> Result<(), io::Error> {
+    let tick_rate = Duration::from_millis(250);
+    Ok(Int10h::default().run(tick_rate))
 }
-
-// SeaBIOS (version rel-1.12.1-0-ga5cab58)
-// Booting from Hard Disk...
-// Starting MS-DOS...
