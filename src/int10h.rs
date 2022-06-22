@@ -24,6 +24,12 @@ impl Int10h {
     pub fn on_ctrl_c(&mut self) {
         self.should_quit = true;
     }
+
+    pub fn on_press(&self, _x: u16, _y: u16) {}
+
+    pub fn on_release(&self, _x: u16, _y: u16) {}
+
+    pub fn on_hold(&self, _x: u16, _y: u16) {}
 }
 
 impl Default for Int10h {
