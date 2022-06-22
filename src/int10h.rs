@@ -20,6 +20,10 @@ impl MenuItem {
 
 impl Int10h {
     pub const TITLES: [&'static str; 2] = ["Home", "MenuItem1"];
+
+    pub fn on_ctrl_c(&mut self) {
+        self.should_quit = true;
+    }
 }
 
 impl Default for Int10h {

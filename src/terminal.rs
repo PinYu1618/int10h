@@ -1,8 +1,7 @@
 use termion::event::Key;
 use termion::input::{TermRead, MouseTerminal};
 use termion::raw::{IntoRawMode, RawTerminal};
-use tui::Terminal;
-use tui::backend::TermionBackend;
+use tui::backend;
 
 use std::error::Error;
 use std::io::Stdout;
@@ -11,14 +10,14 @@ use std::thread;
 
 use crate::*;
 
-pub type Console = Terminal<TermionBackend<MouseTerminal<RawTerminal<Stdout>>>>;
-pub type ConsoleBackend = TermionBackend<MouseTerminal<RawTerminal<Stdout>>>;
+pub type Terminal = tui::Terminal<TerminalBackend>;
+pub type TerminalBackend = backend::TermionBackend<MouseTerminal<RawTerminal<Stdout>>>;
 
 pub fn run(tick_rate: Duration) -> Result<(), Box<dyn Error>> {
     let stdout = io::stdout().into_raw_mode()?;
     let stdout = MouseTerminal::from(stdout);
-    let backend  = TermionBackend::new(stdout);
-    let mut terminal = Terminal::new(backend)?;
+    let backend  = backend::TermionBackend::new(stdout);
+    let mut terminal = tui::Terminal::new(backend)?;
 
     let int10h = Int10h::default();
     run_inner(&mut terminal, int10h, tick_rate)?;
@@ -32,17 +31,21 @@ enum Event {
     Tick,
 }
 
-fn run_inner(terminal: &mut Console, mut int10h: Int10h, tick_rate: Duration) -> Result<(), Box<dyn Error>> {
+fn run_inner(terminal: &mut Terminal, mut int10h: Int10h, tick_rate: Duration) -> Result<(), Box<dyn Error>> {
     let events = events(tick_rate);
 
     loop {
         terminal.draw(|f| ui::draw(f, &mut int10h))?;
 
         match events.recv()? {
-            Event::Key(_key) => {}
+            Event::Key(key) => match key {
+                Key::Ctrl('c') => int10h.on_ctrl_c(),
+                _ => {}
+            }
             Event::Tick => {}
         }
         if int10h.should_quit {
+            terminal.clear()?;
             return Ok(());
         }
     }

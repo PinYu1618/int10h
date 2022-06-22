@@ -1,10 +1,7 @@
-use std::io::Stdout;
-
-use termion::{input::MouseTerminal, raw::RawTerminal};
-use tui::{layout::{Layout, Direction, Constraint, Alignment, Rect}, widgets::{Tabs, Paragraph, Block, Borders, BorderType}, backend::TermionBackend, style::{Style, Color}, text::{Spans, Span}};
+use tui::{layout::{Layout, Direction, Constraint, Alignment, Rect}, widgets::{Tabs, Paragraph, Block, Borders, BorderType}, style::{Style, Color}, text::{Spans, Span}};
 use crate::*;
 
-pub fn draw(f: &mut tui::Frame<ConsoleBackend>, int10h: &mut Int10h) {
+pub fn draw(f: &mut tui::Frame<TerminalBackend>, int10h: &mut Int10h) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .margin(2)
@@ -38,7 +35,7 @@ pub fn draw(f: &mut tui::Frame<ConsoleBackend>, int10h: &mut Int10h) {
     f.render_widget(copyright, chunks[2]);
 }
 
-fn draw_home(f: &mut tui::Frame<TermionBackend<MouseTerminal<RawTerminal<Stdout>>>>, _int10h: &mut Int10h, area: Rect) {
+fn draw_home(f: &mut tui::Frame<TerminalBackend>, _int10h: &mut Int10h, area: Rect) {
     let home = Paragraph::new(vec![
         Spans::from(vec![Span::raw("")]),
         Spans::from(vec![Span::raw("Welcome")]),
@@ -57,7 +54,6 @@ fn draw_home(f: &mut tui::Frame<TermionBackend<MouseTerminal<RawTerminal<Stdout>
         Block::default()
             .borders(Borders::ALL)
             .style(Style::default().fg(Color::White))
-            .title("Home")
             .border_type(BorderType::Plain),
     );
     f.render_widget(home, area);

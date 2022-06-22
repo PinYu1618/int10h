@@ -6,7 +6,7 @@ use std::error::Error;
 use std::io;
 use std::time::Duration;
 
-mod apps;
+mod models;
 mod int10h;
 mod terminal;
 mod ui;
