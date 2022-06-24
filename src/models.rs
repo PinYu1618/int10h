@@ -1,7 +1,9 @@
-use tui::widgets::Widget;
+use tui::widgets::{StatefulWidget, Widget};
 
-pub trait App {
-    type W: Widget;
+pub trait Model {
+    type ModelWidget: Widget;
+}
 
-    fn render() -> Self::W;
+pub trait StatefulModel {
+    type StatefulModelWidget: StatefulWidget;
 }

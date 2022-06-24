@@ -4,20 +4,33 @@
 
 use std::error::Error;
 use std::io;
-use std::time::Duration;
 
+mod app;
 mod models;
-mod int10h;
-mod terminal;
-mod ui;
+mod observer;
+mod rt;
 
-use int10h::*;
-use terminal::*;
+//const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-const VERSION: &str = env!("CARGO_PKG_VERSION");
+use termion::input::MouseTerminal;
+use termion::raw::IntoRawMode;
+use tui::backend::TermionBackend;
+
+use self::app::*;
+use self::rt::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let tick_rate = Duration::from_millis(250);
-    run(tick_rate)?;
+    let app = App::default();
+
+    let stdout = MouseTerminal::from(io::stdout().into_raw_mode()?); // don't want to use alternate screen because it is ugly :-(
+    let backend = TermionBackend::new(stdout);
+    let terminal = tui::Terminal::new(backend)?;
+
+    let mut tui = Tui::new(terminal, 250);
+    tui.init()?;
+
+    tui.run(app)?;
+
+    tui.exit()?;
     Ok(())
 }
